@@ -18,6 +18,13 @@ Begrunnelse for teknologivalg:
 
 
 Hvordan kjøre prosjektet:
+Gå i terminalen og kjør:
+“git clone git@github.com:EvenM05/Kundeklager360.git”.
+Så skriver du “cd backend” og så skriver du “dotnet restore” for å laste ned alle pakkene til prosjektet. Etter det skriver du “dotnet run” for å kjøre backenden til prosjektet
+
+Etter det så åpner du en ny terminal og skriver “cd frontend” og skriver “npm install” for å laste ned alle pakkene til frontenden. Så skriver du “npm run dev” for å kjøre frontenden. 
+
+Det siste du skal gjøre er å starte databasen. Last ned et program som heter docker desktop. Så går lager du en ny terminal og skriver “cd backend” og så “docker-compose up -d”. Dette vil gjøre databasen tilgjengelig i docker desktop slik at du kan kjøre den.
 
 
 Skisser, diagrammer, etc:
