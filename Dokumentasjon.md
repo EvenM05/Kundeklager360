@@ -1,4 +1,7 @@
 Funksjonalitetsbeskrivelse:
+Kundeklager 360 er en app som lar kunder gi oss klager. Disse klagene inkluderer navn på kunden og en beskrivelse av hva klagen er. Klagen inneholder også prioritet på hvor viktig klagen er, statusen på om klagen er ny, under behandlig eller ferdig, og en kategori på hva klagen handler om.
+
+For å bruke siden så starter du med å lage en bruker og logger inn. H
 
 
 Begrunnelse for teknologivalg:
