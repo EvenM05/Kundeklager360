@@ -5,7 +5,6 @@ import {
   Card,
   CardContent,
   CardHeader,
-  IconButton,
   TablePagination,
   Typography,
   Grid,
@@ -17,24 +16,17 @@ import {
   Chip,
   FormControl,
   InputLabel,
-  Toolbar,
-  AppBar,
   TextField,
   InputAdornment,
   Container,
   Paper,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import CloseIcon from "@mui/icons-material/Close";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import FlagIcon from "@mui/icons-material/Flag";
 import PersonIcon from "@mui/icons-material/Person";
-import {
-  useGetComplaintPagination,
-  useGetAllComplaints,
-} from "../Api/hooks/ComplaintHooks";
+import { useGetComplaintPagination } from "../Api/hooks/ComplaintHooks";
 import { ErrorPage } from "../Utils/ErrorPage";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { ComplaintPriority } from "../Components/ComplaintPriority";
 import { ComplaintStatus } from "../Components/ComplaintStatus";
 import { ComplaintDialog } from "../Components/ComplaintDialog";
@@ -48,8 +40,6 @@ import {
 import { CreateComplaintDialog } from "../Components/CreateComplaint";
 import { retrieveFromStorage } from "../Utils/localStorage";
 
-// Helper function to get background color based on status
-
 export enum ComplaintVariant {
   Product = "product",
   CustomerService = "customer_service",
@@ -59,71 +49,44 @@ export enum ComplaintVariant {
 const getStatusColor = (status: number) => {
   switch (status) {
     case 1:
-      return "#e3f2fd"; // New - light blue
+      return "#e3f2fd";
     case 2:
-      return "#fff8e1"; // Under process - light amber
+      return "#fff8e1";
     case 3:
-      return "#e8f5e9"; // Finished - light green
+      return "#e8f5e9";
     default:
-      return "#f5f5f5"; // Default - light grey
+      return "#f5f5f5";
   }
 };
 
-// Helper function to get priority color
 const getPriorityColor = (priority: number) => {
   switch (priority) {
     case 1:
-      return "#2e7d32"; // Low - green
+      return "#2e7d32";
     case 2:
-      return "#ff9800"; // Medium - orange
+      return "#ff9800";
     case 3:
-      return "#d32f2f"; // High - red
+      return "#d32f2f";
     default:
-      return "#757575"; // Default - grey
+      return "#757575";
   }
 };
 
 export default function ComplaintOverview() {
-  const [searchParams, setSearchParams] = useSearchParams();
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const [dialogId, setDialogId] = useState<string>("");
   const [dialogString, setDialogString] = useState<string>("");
   const [drawerOpen, setDrawerOpen] = useState<boolean>(false);
   const drawerWidth = 280;
 
-  const [page, setPage] = useState(
-    searchParams.get("currentPage")
-      ? Number(searchParams.get("currentPage"))
-      : 0,
-  );
-  const [rowsPerPage, setRowsPerPage] = useState(
-    searchParams.get("itemsPerPage")
-      ? Number(searchParams.get("itemsPerPage"))
-      : 10,
-  );
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const [sortOrder, setSortOrder] = useState(
-    searchParams.get("sortOrder") || "desc",
-  );
-  const [statusFilter, setStatusFilter] = useState(
-    searchParams.get("statusFilter")
-      ? Number(searchParams.get("statusFilter"))
-      : 0,
-  );
-  const [priorityFilter, setPriorityFilter] = useState(
-    searchParams.get("priorityFilter")
-      ? Number(searchParams.get("priorityFilter"))
-      : 0,
-  );
-  const [variantFilter, setVariantFilter] = useState(
-    searchParams.get("variantFilter")
-      ? Number(searchParams.get("variantFilter"))
-      : 0,
-  );
-
-  const [searchValue, setSearchValue] = useState(
-    searchParams.get("searchValue") || "",
-  );
+  const [sortOrder, setSortOrder] = useState("desc");
+  const [statusFilter, setStatusFilter] = useState(0);
+  const [priorityFilter, setPriorityFilter] = useState(0);
+  const [variantFilter, setVariantFilter] = useState(0);
+  const [searchValue, setSearchValue] = useState("");
 
   const debouncedSearch = useDebounce(searchValue, 500);
 

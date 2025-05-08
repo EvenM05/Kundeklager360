@@ -50,7 +50,6 @@ import { usePostComment } from "../../Api/hooks/CommentHooks";
 import { CreateCommentData } from "../../Utils/interfaces/CommentInterfaces";
 import { retrieveFromStorage } from "../../Utils/localStorage";
 
-// Define ComplaintVariant enum
 export enum ComplaintVariant {
   Product = "Product",
   CustomerService = "CustomerService",
@@ -202,7 +201,6 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
 
   if (!complaintData) return null;
 
-  // Convert string to ComplaintVariant enum
   const complaintVariant = stringToVariantEnum(
     variantIntToEnum(complaintData.complaintVariant) || "Other",
   );
