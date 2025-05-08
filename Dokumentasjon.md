@@ -1,7 +1,11 @@
 Funksjonalitetsbeskrivelse:
 Kundeklager 360 er en app som lar kunder gi oss klager. Disse klagene inkluderer navn på kunden og en beskrivelse av hva klagen er. Klagen inneholder også prioritet på hvor viktig klagen er, statusen på om klagen er ny, under behandlig eller ferdig, og en kategori på hva klagen handler om.
 
-For å bruke siden så starter du med å lage en bruker og logger inn. H
+For å bruke siden så starter du med å lage en bruker og logger inn. Her er oversikten over alle klagene som har blitt ført av en bruker. 
+Trykker du på en så får du mer detaljer og et kommentar felt for intern kommunikasjon. Du kan også endre statusen på klagen der.
+Tilbake på oversiktsiden så er det en knapp som lar deg lage nye klager. Der skriver du inn navnet på kunden, velger prioritet og kategori, og så skriver en beskrivelse av klagen.
+Øverst til venstre er det en knapp som åpner en side meny. Her kan du velge filtre på klager slik som prioritet, status og kategori. Ved siden av ny klage knappen er det også en sorterings meny.
+
 
 
 Begrunnelse for teknologivalg:
