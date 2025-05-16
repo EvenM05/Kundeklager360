@@ -5,6 +5,7 @@ using Kundeklager.Enums;
 
 namespace Kundeklager.Models.Dto
 {
+    // Dto for defining what data is required when creating a new comment
     public class CreateCommentDto
     {
         public Guid id { get; set;}  = Guid.NewGuid();

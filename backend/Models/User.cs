@@ -5,6 +5,7 @@ using Kundeklager.Enums;
 
 namespace Kundeklager.Models
 {
+    // Database model for the user table
     public class User
     {
         [Key]

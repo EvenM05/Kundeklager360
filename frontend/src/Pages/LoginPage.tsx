@@ -21,7 +21,7 @@ export default function LoginPage() {
   const { register, handleSubmit } = useForm<LoginModel>();
   const navigate = useNavigate();
 
-  const { mutateAsync: userLogin } = useLogin(() => console.log());
+  const { mutateAsync: userLogin } = useLogin();
 
   const onSubmit = async (data: LoginModel) => {
     const loginResponse = await userLogin(data);
@@ -29,7 +29,6 @@ export default function LoginPage() {
     if (!loginResponse) {
       console.error("email or password wrong");
     } else {
-      console.log(loginResponse);
       saveToStorage("token", loginResponse.token);
       saveToStorage("userId", loginResponse.userId);
       navigate("/ComplaintOverview");

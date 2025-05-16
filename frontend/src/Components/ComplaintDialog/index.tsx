@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -22,24 +21,13 @@ import {
 } from "@mui/material";
 import { format } from "date-fns";
 import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
-import HourglassEmptyIcon from "@mui/icons-material/HourglassEmpty";
 import CommentIcon from "@mui/icons-material/Comment";
 import SendIcon from "@mui/icons-material/Send";
-import FiberNewIcon from "@mui/icons-material/FiberNew";
-import CategoryIcon from "@mui/icons-material/Category";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import SupportAgentIcon from "@mui/icons-material/SupportAgent";
-import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import {
   useGetComplaintById,
   useUpdateComplaint,
 } from "../../Api/hooks/ComplaintHooks";
-import {
-  priorityIntToEnum,
-  statusIntToEnum,
-  variantIntToEnum,
-} from "../../Utils/Enums";
+import { priorityIntToEnum, statusIntToEnum } from "../../Utils/Enums";
 import { UpdateComplaintModel } from "../../Utils/interfaces/ComplaintInterfaces";
 import {
   GET_COMPLAINT_BY_ID_QUERY_KEY,
@@ -49,134 +37,21 @@ import { useQueryClient } from "@tanstack/react-query";
 import { usePostComment } from "../../Api/hooks/CommentHooks";
 import { CreateCommentData } from "../../Utils/interfaces/CommentInterfaces";
 import { retrieveFromStorage } from "../../Utils/localStorage";
-
-export enum ComplaintVariant {
-  Product = "Product",
-  CustomerService = "CustomerService",
-  Delivery = "Delivery",
-  Other = "Other",
-}
+import {
+  getPriorityColor,
+  getPriorityLabel,
+  getStatusColor,
+  getStatusIcon,
+  getStatusLabel,
+  getVariantColor,
+  getVariantIcon,
+  getVariantLabel,
+} from "../EnumConversions";
 
 interface ComplaintDialogProps {
   complaintId: string;
   onClose: () => void;
 }
-
-const getStatusIcon = (status: number) => {
-  switch (status) {
-    case 1:
-      return <FiberNewIcon />;
-    case 2:
-      return <HourglassEmptyIcon />;
-    case 3:
-      return <CheckCircleIcon />;
-  }
-};
-
-const getStatusColor = (
-  status: number,
-):
-  | "default"
-  | "primary"
-  | "secondary"
-  | "error"
-  | "info"
-  | "success"
-  | "warning" => {
-  switch (status) {
-    case 1:
-      return "info";
-    case 2:
-      return "warning";
-    case 3:
-      return "success";
-    default:
-      return "default";
-  }
-};
-
-const getStatusLabel = (status: number): string => {
-  switch (status) {
-    case 1:
-      return "New";
-    case 2:
-      return "Under Process";
-    case 3:
-      return "Completed";
-    default:
-      return "New";
-  }
-};
-
-const getPriorityColor = (
-  priority: number,
-):
-  | "default"
-  | "primary"
-  | "secondary"
-  | "error"
-  | "info"
-  | "success"
-  | "warning" => {
-  switch (priority) {
-    case 1:
-      return "success";
-    case 2:
-      return "warning";
-    case 3:
-      return "error";
-    default:
-      return "default";
-  }
-};
-
-const getVariantIcon = (variant: ComplaintVariant) => {
-  switch (variant) {
-    case ComplaintVariant.Product:
-      return <CategoryIcon />;
-    case ComplaintVariant.CustomerService:
-      return <SupportAgentIcon />;
-    case ComplaintVariant.Delivery:
-      return <LocalShippingIcon />;
-    case ComplaintVariant.Other:
-      return <HelpOutlineIcon />;
-  }
-};
-
-const getVariantColor = (
-  variant: ComplaintVariant,
-):
-  | "default"
-  | "primary"
-  | "secondary"
-  | "error"
-  | "info"
-  | "success"
-  | "warning" => {
-  switch (variant) {
-    case ComplaintVariant.Product:
-      return "primary";
-    case ComplaintVariant.CustomerService:
-      return "secondary";
-    case ComplaintVariant.Delivery:
-      return "info";
-    case ComplaintVariant.Other:
-      return "default";
-  }
-};
-
-const stringToVariantEnum = (variantString: string): ComplaintVariant => {
-  switch (variantString) {
-    case "Product":
-      return ComplaintVariant.Product;
-    case "CustomerService":
-      return ComplaintVariant.CustomerService;
-    case "Delivery":
-      return ComplaintVariant.Delivery;
-    default:
-      return ComplaintVariant.Other;
-  }
-};
 
 export const ComplaintDialog = (props: ComplaintDialogProps) => {
   const { complaintId, onClose } = props;
@@ -201,10 +76,6 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
 
   if (!complaintData) return null;
 
-  const complaintVariant = stringToVariantEnum(
-    variantIntToEnum(complaintData.complaintVariant) || "Other",
-  );
-
   const handleStatusChange = () => {
     const updateModel: UpdateComplaintModel = {
       status: complaintData.status + 1,
@@ -225,7 +96,7 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
       const commentData: CreateCommentData = {
         commentString: newComment,
         complaintId: complaintData.id,
-        userId: complaintData.userId,
+        userId: retrieveFromStorage("userId") || "",
       };
       postComment(commentData);
       setNewComment("");
@@ -257,20 +128,10 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
         sx={{ backgroundColor: "primary.main", color: "white", px: 3, py: 2 }}
       >
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h6" component="div">
+          <Typography variant="h6" component="div" color="#ffffff">
             Complaint Details
           </Typography>
           <Box display="flex">
-            <Chip
-              icon={getVariantIcon(complaintVariant)}
-              label={complaintVariant
-                .toString()
-                .replace(/([A-Z])/g, " $1")
-                .trim()}
-              color={getVariantColor(complaintVariant)}
-              size="small"
-              sx={{ mr: 1 }}
-            />
             <Chip
               icon={getStatusIcon(complaintData.status)}
               label={getStatusLabel(complaintData.status)}
@@ -279,8 +140,15 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
               sx={{ mr: 1 }}
             />
             <Chip
+              icon={getVariantIcon(complaintData.complaintVariant)}
+              label={getVariantLabel(complaintData.complaintVariant)}
+              color={getVariantColor(complaintData.complaintVariant)}
+              size="small"
+              sx={{ mr: 1 }}
+            />
+            <Chip
               icon={<PriorityHighIcon />}
-              label={priorityIntToEnum(complaintData.priority).toUpperCase()}
+              label={getPriorityLabel(complaintData.priority)}
               color={getPriorityColor(complaintData.priority)}
               size="small"
             />
@@ -303,6 +171,9 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
             <Typography variant="body2">
               {format(new Date(complaintData.createDate), "PPP p")}
             </Typography>
+            <Typography variant="body2">
+              By: {complaintData.createdUser.name}
+            </Typography>
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6 }}>
@@ -311,6 +182,9 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
             </Typography>
             <Typography variant="body2">
               {format(new Date(complaintData.updatedDate), "PPP p")}
+            </Typography>
+            <Typography variant="body2">
+              By: {complaintData.updatedUser.name}
             </Typography>
           </Grid>
 
@@ -444,7 +318,13 @@ export const ComplaintDialog = (props: ComplaintDialogProps) => {
         </Button>
         <Box>
           <Button
-            sx={{ p: "0.5em" }}
+            sx={{
+              p: "0.5em",
+              color:
+                statusIntToEnum(complaintData.status) === "Fixed"
+                  ? "#c5c5c5"
+                  : "#ffffff",
+            }}
             onClick={handleStatusChange}
             variant={
               statusIntToEnum(complaintData.status) === "Fixed"

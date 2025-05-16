@@ -24,28 +24,32 @@ namespace Kundeklager.Controllers
         
         [HttpPost("CreateUser")]
 
-        public IActionResult CreateUser([FromBody] CreateUserDto model)
+        public IActionResult CreateUser([FromBody] UserDto model)
         {
-            if (_appDbContext.Users.Any(u => u.Email == model.Email))
+            if (ModelState.IsValid) 
             {
-                return BadRequest(new { Error = "A user with this email already exists"});
+                if (_appDbContext.Users.Any(u => u.Email == model.Email))
+                {
+                    return BadRequest(new { Error = "A user with this email already exists"});
+                }
+
+                var salt = BCrypt.Net.BCrypt.GenerateSalt();
+                var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password, salt);
+
+                var user = new User
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    PasswordHash = hashedPassword,
+                    Salt = salt,
+                };
+
+                _appDbContext.Users.AddAsync(user);
+                _appDbContext.SaveChangesAsync();
+
+                return Ok();
             }
-
-            var salt = BCrypt.Net.BCrypt.GenerateSalt();
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password, salt);
-
-            var user = new User
-            {
-                Name = model.Name,
-                Email = model.Email,
-                PasswordHash = hashedPassword,
-                Salt = salt,
-            };
-
-            _appDbContext.Users.AddAsync(user);
-            _appDbContext.SaveChangesAsync();
-
-            return Ok();
+            return BadRequest(ModelState);
         }
 
         [HttpGet("GetAllUsers")]
@@ -53,7 +57,7 @@ namespace Kundeklager.Controllers
 
         public async Task<IActionResult> GetAllUsers()
         {
-            var users = await _appDbContext.Users.Select(u => new UserDto
+            var users = await _appDbContext.Users.Select(u => new GetUserDto
             {
                 Id = u.Id, 
                 Name = u.Name,
@@ -67,7 +71,7 @@ namespace Kundeklager.Controllers
         [Authorize]
         public async Task<IActionResult> GetUserById(Guid Id)
         {
-            var user = await _appDbContext.Users.Where(u => u.Id == Id).Select(u => new UserDto
+            var user = await _appDbContext.Users.Where(u => u.Id == Id).Select(u => new GetUserDto
             {
                 Id = u.Id, 
                 Name = u.Name,

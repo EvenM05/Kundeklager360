@@ -5,6 +5,7 @@ using Kundeklager.Enums;
 
 namespace Kundeklager.Models
 {
+    // Database model for the complaint table
     public class Complaint
     {
         [Key]
@@ -33,13 +34,14 @@ namespace Kundeklager.Models
 
         public Guid CreatedUserId {get; set; }
 
+        [ForeignKey("CreatedUserId")]
         public User? CreatedUser { get; set; }
-
+        
         public Guid UpdatedUserId {get; set; }
 
+        [ForeignKey("UpdatedUserId")]
         public User? UpdatedUser { get; set; }
-
-
+        
         public ICollection<Comment>? Comments { get; set; } = new List<Comment>();
     }
 }

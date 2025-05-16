@@ -1,11 +1,7 @@
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using Kundeklager.Enums;
-
 namespace Kundeklager.Models.Dto
 {
-    public class CreateUserDto
+    // Dto for defining what data is provided when getting data from the user table in the database
+    public class UserDto
     {
         public string? Name { get; set;}
 

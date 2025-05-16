@@ -8,10 +8,12 @@ export interface GetAllComplaintsData {
   priority: number;
   status: number;
   complaintVariant: number;
-  createDate: Date;
-  updatedDate: Date;
-  userId: string;
-  user: UserData;
+  createdUserId: string;
+  createDate: string;
+  updatedDate: string;
+  createdUser: UserData;
+  updatedUserId: string;
+  updatedUser: UserData;
   comments: CommentData[];
 }
 

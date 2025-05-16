@@ -37,10 +37,10 @@ namespace Kundeklager.Controllers
 
             if (user == null)
             {
-                return BadRequest( new { Error = "No user uses the specified email"});
+                return BadRequest( new { Error = "No user with the specified email"});
             }
 
-            if (user == null || !VerifyPassword(model.Password, user.PasswordHash, user.Salt)) 
+            if ( !VerifyPassword(model.Password, user.PasswordHash, user.Salt)) 
             {
                 return Unauthorized(new {Error = "Unauthorized"});
             }

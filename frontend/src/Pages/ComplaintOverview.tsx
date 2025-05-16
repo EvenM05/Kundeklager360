@@ -26,9 +26,6 @@ import FlagIcon from "@mui/icons-material/Flag";
 import PersonIcon from "@mui/icons-material/Person";
 import { useGetComplaintPagination } from "../Api/hooks/ComplaintHooks";
 import { ErrorPage } from "../Utils/ErrorPage";
-import { useSearchParams } from "react-router-dom";
-import { ComplaintPriority } from "../Components/ComplaintPriority";
-import { ComplaintStatus } from "../Components/ComplaintStatus";
 import { ComplaintDialog } from "../Components/ComplaintDialog";
 import useDebounce from "../Utils/useDebounce";
 import { OverviewAppbar } from "../Components/OverviewAppbar";
@@ -39,38 +36,14 @@ import {
 } from "../Utils/Enums";
 import { CreateComplaintDialog } from "../Components/CreateComplaint";
 import { retrieveFromStorage } from "../Utils/localStorage";
-
-export enum ComplaintVariant {
-  Product = "product",
-  CustomerService = "customer_service",
-  Delivery = "delivery",
-  Other = "other",
-}
-const getStatusColor = (status: number) => {
-  switch (status) {
-    case 1:
-      return "#e3f2fd";
-    case 2:
-      return "#fff8e1";
-    case 3:
-      return "#e8f5e9";
-    default:
-      return "#f5f5f5";
-  }
-};
-
-const getPriorityColor = (priority: number) => {
-  switch (priority) {
-    case 1:
-      return "#2e7d32";
-    case 2:
-      return "#ff9800";
-    case 3:
-      return "#d32f2f";
-    default:
-      return "#757575";
-  }
-};
+import {
+  getPriorityColor,
+  getPriorityLabel,
+  getStatusColor,
+  getStatusLabel,
+  getVariantColor,
+  getVariantLabel,
+} from "../Components/EnumConversions";
 
 export default function ComplaintOverview() {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
@@ -270,7 +243,6 @@ export default function ComplaintOverview() {
           </Box>
         </Drawer>
 
-        {/* Complaints Grid */}
         <Box
           component="main"
           sx={{
@@ -320,8 +292,7 @@ export default function ComplaintOverview() {
                 <Button
                   onClick={() => handleOpenDialog("CreateComplaint")}
                   variant="contained"
-                  color="primary"
-                  sx={{ p: "0.5em" }}
+                  sx={{ p: "0.5em", color: "#ffffff" }}
                 >
                   Create new complaint
                 </Button>
@@ -370,7 +341,6 @@ export default function ComplaintOverview() {
                       <Box
                         sx={{
                           display: "flex",
-
                           flexWrap: "wrap",
                           gap: 1,
                           mt: 1,
@@ -378,39 +348,39 @@ export default function ComplaintOverview() {
                       >
                         <Chip
                           size="small"
-                          label={ComplaintStatus(complaint.status)}
                           variant="outlined"
+                          label={getStatusLabel(complaint.status)}
+                          color={getStatusColor(complaint.status)}
                           sx={{
-                            color: getStatusColor(complaint.priority),
-                            borderColor: getStatusColor(complaint.priority),
+                            borderColor: getStatusColor(complaint.status),
                             padding: "5px",
                           }}
                         />
                         <Chip
                           size="small"
+                          variant="outlined"
+                          label={getVariantLabel(complaint.complaintVariant)}
+                          color={getVariantColor(complaint.complaintVariant)}
+                          sx={{
+                            borderColor: getVariantColor(
+                              complaint.complaintVariant,
+                            ),
+                            padding: "5px",
+                          }}
+                        />
+                        <Chip
+                          size="small"
+                          variant="outlined"
                           icon={
                             <FlagIcon sx={{ fontSize: "16px !important" }} />
                           }
-                          label={ComplaintPriority(complaint.priority)}
+                          label={getPriorityLabel(complaint.priority)}
+                          color={getPriorityColor(complaint.priority)}
                           sx={{
-                            color: getPriorityColor(complaint.priority),
                             borderColor: getPriorityColor(complaint.priority),
                             padding: "5px",
                           }}
-                          variant="outlined"
                         />
-                        {complaint.complaintVariant && (
-                          <Chip
-                            size="small"
-                            label={variantIntToEnum(
-                              complaint.complaintVariant,
-                            ).replace("_", " ")}
-                            sx={{
-                              padding: "5px",
-                            }}
-                            variant="outlined"
-                          />
-                        )}
                       </Box>
                     </CardContent>
                   </Card>

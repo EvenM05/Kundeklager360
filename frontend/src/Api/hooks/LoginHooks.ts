@@ -6,16 +6,14 @@ import {
 } from "../../Utils/interfaces/loginInterfaces";
 import { LoginClient } from "../backendApi/loginApi";
 
-export const useLogin = (onSuccess: () => void) =>
+export const useLogin = () =>
   useMutation({
     mutationFn: (model: LoginModel): Promise<LoginResponseModel> =>
       LoginClient.login(model),
-    onSuccess,
   });
 
-export const useRegisterUser = (onSuccess: () => void) =>
+export const useRegisterUser = () =>
   useMutation({
     mutationFn: (model: RegisterModel): Promise<LoginResponseModel> =>
       LoginClient.registerUser(model),
-    onSuccess,
   });

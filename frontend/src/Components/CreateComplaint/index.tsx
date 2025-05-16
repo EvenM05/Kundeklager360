@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Dialog,
   DialogTitle,
   DialogContent,
   DialogActions,
@@ -10,17 +9,14 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Box,
   Typography,
   IconButton,
-  CircularProgress,
   Divider,
   Grid,
   Alert,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { useCreateComplaint } from "../../Api/hooks/ComplaintHooks";
-import { ComplaintVariant } from "../ComplaintDialog";
 import { useQueryClient } from "@tanstack/react-query";
 import {
   GET_COMPLAINT_BY_ID_QUERY_KEY,
@@ -199,7 +195,12 @@ export const CreateComplaintDialog: React.FC<CreateComplaintDialogProps> = ({
         <Button onClick={handleClose} color="inherit">
           Cancel
         </Button>
-        <Button onClick={handleSubmit} variant="contained" color="primary">
+        <Button
+          onClick={handleSubmit}
+          variant="contained"
+          color="primary"
+          sx={{ p: "0.5em" }}
+        >
           Create Complaint
         </Button>
       </DialogActions>

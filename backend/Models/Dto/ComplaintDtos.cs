@@ -2,7 +2,7 @@ using Kundeklager.Enums;
 
 namespace Kundeklager.Models.Dto
 {
-
+    // Dto for the data provided by the database when using the complaint pagination request
     public class ComplaintPaginationDto
     {
         public Guid Id { get; set; }
@@ -21,6 +21,7 @@ namespace Kundeklager.Models.Dto
         public List<ComplaintPaginationCommentDto> Comments { get; set; }
     }
 
+    //  Dto for the data in the CreatedUser object and UpdatedUser object in ComplaintPagination
     public class ComplaintPaginationUserDto
     {
         public Guid Id { get; set; }
@@ -28,6 +29,7 @@ namespace Kundeklager.Models.Dto
         public string Email { get; set; }
     }
 
+    // Dto for the data for the comment object in ComplaintPagination
     public class ComplaintPaginationCommentDto
     {
         public string CommentString { get; set; }
@@ -35,9 +37,9 @@ namespace Kundeklager.Models.Dto
         public ComplaintPaginationUserDto User { get; set; }
     }
 
+    // Dto for the data required when creating a new complaint
     public class CreateComplaintDto
     {
-
         public string? Customer { get; set;}
 
         public string? Description { get; set;}
@@ -52,7 +54,7 @@ namespace Kundeklager.Models.Dto
 
     }
 
-
+    // Dto for the provided data from the getAllComplaints request
     public class GetAllComplaintsDto
     {
 
@@ -73,6 +75,7 @@ namespace Kundeklager.Models.Dto
         public User? User { get; set; }
     }
     
+    // Dto for the data required when updating the data in a complaint
     public class UpdateComplaintDto
     {
 

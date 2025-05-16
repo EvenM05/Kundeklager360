@@ -5,6 +5,7 @@ using Kundeklager.Enums;
 
 namespace Kundeklager.Models
 {
+    // Dto for defining what data is required when sending a request to the database 
     public class LoginDto
     {
         public string? Email { get; set;}

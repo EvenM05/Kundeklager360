@@ -21,12 +21,11 @@ export default function RegisterPage() {
   const { register, handleSubmit } = useForm<RegisterModel>();
   const navigate = useNavigate();
 
-  const { mutateAsync: registerUser } = useRegisterUser(() => console.log());
+  const { mutateAsync: registerUser } = useRegisterUser();
 
   const onSubmit = async (data: RegisterModel) => {
-    const registerResponse = await registerUser(data);
+    await registerUser(data);
 
-    console.log(registerResponse);
     navigate("/login");
   };
 

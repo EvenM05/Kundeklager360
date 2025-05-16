@@ -1,11 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import {
-  HashRouter as Router,
-  Route,
-  Routes,
-  RouterProvider,
-  createBrowserRouter,
-} from "react-router-dom";
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import "./App.css";
 import { ThemeProvider } from "@mui/material";
 import LoginPage from "./Pages/LoginPage";
@@ -16,8 +10,6 @@ import { ProtectedRoute } from "./Utils/protectedRoute";
 
 export default function App() {
   const queryClient = new QueryClient();
-
-  console.log("Hello world");
 
   const router = createBrowserRouter([
     {

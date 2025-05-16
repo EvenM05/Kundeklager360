@@ -16,7 +16,6 @@ export const OverviewAppbar = (props: OverviewAppbarProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    console.log("button");
     navigate("/login");
     removeFromStorage("token");
     removeFromStorage("userId");
@@ -46,7 +45,7 @@ export const OverviewAppbar = (props: OverviewAppbarProps) => {
         <Typography
           variant="h5"
           component="div"
-          sx={{ flexGrow: 1, fontWeight: 600 }}
+          sx={{ flexGrow: 1, fontWeight: 600, color: "#ffffff" }}
         >
           Kundeklager 360
         </Typography>
@@ -54,7 +53,7 @@ export const OverviewAppbar = (props: OverviewAppbarProps) => {
           variant="outlined"
           color="inherit"
           startIcon={<LogoutIcon />}
-          sx={{ borderRadius: 2, padding: "0.5em" }}
+          sx={{ borderRadius: 2, padding: "0.5em", color: "#ffffff" }}
           onClick={handleLogout}
         >
           Log out
